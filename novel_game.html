@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Novel Game</title>
+</head>
+<body>
+  <div align="center">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+  </div>
+  <script src="./cocos2d-js-v3.13.js" charset="UTF-8"></script>
+  <script>
+    var resources = {
+      back1: 'resources/back1.jpg',
+      cgboy: 'resources/cg_boy.png'
+    };
+    window.onload = function() {
+      cc.game.onStart = function() {
+        var preload_resources = [
+          resources.back1,
+          resources.cgboy
+        ];
+        cc.LoaderScene.preload(preload_resources, function(){
+            var MyScene = cc.Scene.extend({
+              onEnter: function() {
+                this._super();
+                var size = cc.director.getWinSize();
+                var back1 = cc.Sprite.create(resources.back1);
+                back1.setPosition(size.width / 2, size.height / 2);
+                back1.setScale(1.0);
+                this.addChild(back1, 0);
+
+                var cgboy = cc.Sprite.create(resources.cgboy);
+                cgboy.setPosition(size.width / 2, size.height / 2);
+                cgboy.setScale(1.0);
+                this.addChild(cgboy, 1);
+
+                var rect = new cc.DrawNode();
+                rect.drawRect(cc.p(30, 20), cc.p(770, 200), cc.color(0,0,0,128), 1, cc.color(255,255,255));
+                this.addChild(rect, 2);
+
+                var messages = new cc.LabelTTF("テストメッセージです。あいうえお。あいうえお。あいうえお。あいうえお。", "Arial", 35);
+                messages.setPosition(size.width / 2 + 12, size.height / 2 - 150);
+                messages.setDimensions(size.width - 85, 0)
+                this.addChild(messages, 3);
+              }
+            });
+            cc.director.runScene(new MyScene());
+        }, this);
+      };
+      cc.game.run("gameCanvas");
+    };
+  </script>
+</body>
+</html>
